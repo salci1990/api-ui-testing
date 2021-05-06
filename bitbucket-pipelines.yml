@@ -5,6 +5,7 @@ pipelines:
     '**':
       - step:
           name: Build and Test
+          max-time: 2
           caches:
             - maven
           artifacts:
