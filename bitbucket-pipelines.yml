@@ -1,0 +1,31 @@
+image: maven:3.6.3
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Build and Test
+          caches:
+            - maven
+          artifacts:
+            - target/surefire-reports/**
+          script:
+            - mvn -Dgrid.url=http://localhost:4444/wd/hub -B verify --file pom.xml
+          services:
+            - selenium-grid
+            - selenium-chrome
+
+definitions:
+  services:
+    selenium-grid:
+      image: selenium/hub:latest
+      ports:
+        - "4444:4444"
+    selenium-chrome:
+      image: selenium/node-chrome:latest
+      volumes:
+        - /dev/shm:/dev/shm
+      depends_on:
+        - selenium-grid
+      environment:
+        HUB_HOST: localhost
