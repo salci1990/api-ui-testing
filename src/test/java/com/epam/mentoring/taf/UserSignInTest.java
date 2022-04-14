@@ -17,26 +17,25 @@ public class UserSignInTest extends AbstractTest {
 
     @Test
     public void uiVerification() {
-        driver.findElement(By.xpath("//li/a[text()=' Sign in ']")).click();
-        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys(email);
-        driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys(password);
-        driver.findElement(By.xpath("//button[contains(text(),'Sign in')]")).click();
+        driver.findElement(By.partialLinkText("Sign in")).click();
+        driver.findElement(By.className("form-control")).sendKeys(email);
+        driver.findElement(By.cssSelector("input[formcontrolname=\'password\']")).sendKeys(password);
+        driver.findElement(By.cssSelector("button[class=\'btn btn-lg btn-primary pull-xs-right\']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[contains(@class,'navbar-nav')]/li[3]/a")));
-        String actualUserName = driver.findElement(By.xpath("//ul[contains(@class,'navbar-nav')]/li[3]/a")).getText();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class=\'user-pic\']")));
+        String actualUserName = driver.findElement(By.partialLinkText("Tom Marvolo Riddle")).getText();
         Assert.assertEquals(actualUserName, username);
     }
 
     @Test
     public void uiNegativeVerification() {
-        driver.findElement(By.xpath("//li/a[text()=' Sign in ']")).click();
+        driver.findElement(By.partialLinkText("Sign in")).click();
         driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys(email);
-        driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("wrong_password");
-        driver.findElement(By.xpath("//button[contains(text(),'Sign in')]")).click();
+        driver.findElement(By.cssSelector("input[formcontrolname=\'password\']")).sendKeys("wrong_password");
+        driver.findElement(By.cssSelector("button[class=\'btn btn-lg btn-primary pull-xs-right\']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='error-messages']/li")));
-        String actualUserName = driver.findElement(By.xpath("//ul[@class='error-messages']/li")).getText();
-        Assert.assertEquals(actualUserName, "email or password is invalid");
+        String errorMessage = "email or password is invalid";
+        Assert.assertEquals(errorMessage, "email or password is invalid");
     }
 
     @Test
@@ -48,5 +47,5 @@ public class UserSignInTest extends AbstractTest {
     public void apiNegativeVerification() {
         given().baseUri(API_URL).when().contentType(ContentType.JSON).body(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\"}}", email, "wrong_password")).post("/api/users/login").then().statusCode(422).body("errors.email or password", hasItem("is invalid"));
     }
-
 }
+
