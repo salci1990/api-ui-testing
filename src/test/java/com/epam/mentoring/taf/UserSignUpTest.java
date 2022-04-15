@@ -21,13 +21,13 @@ public class UserSignUpTest extends AbstractTest {
         String email = this.email.replace("@", "." + uniqueId + "@");
 
         driver.get(UI_URL);
-        driver.findElement(By.xpath("//li/a[text()=' Sign up ']")).click();
-        driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys(username);
-        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys(email);
-        driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys(password);
+        driver.findElement(By.partialLinkText("Sign up")).click();
+        driver.findElement(By.cssSelector("input[placeholder=\'Username\']")).sendKeys(username);
+        driver.findElement(By.cssSelector("input[formcontrolname=\'email\']")).sendKeys(email);
+        driver.findElement(By.cssSelector("input[formcontrolname=\'password\']")).sendKeys(password);
+        driver.findElement(By.cssSelector("button[class=\'btn btn-lg btn-primary pull-xs-right\']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[contains(@class,'navbar-nav')]/li[4]/a")));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class=\'user-pic\']")));
         String actualUserName = driver.findElement(By.xpath("//ul[contains(@class,'navbar-nav')]/li[4]/a")).getText();
         Assert.assertEquals(actualUserName, username);
     }
