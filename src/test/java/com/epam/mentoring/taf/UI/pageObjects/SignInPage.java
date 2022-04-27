@@ -37,11 +37,13 @@ public class SignInPage implements IPageValidation {
     }
 
     public SignInPage enterEmailField(String email) {
+        emailField.clear();
         emailField.sendKeys(email);
         return this;
     }
 
     public SignInPage enterPasswordField(String password) {
+        passwordField.clear();
         passwordField.sendKeys(password);
         return this;
     }
@@ -54,6 +56,4 @@ public class SignInPage implements IPageValidation {
     public String getSignInTitle() {
         return signInTitle.getText();
     }
-
-
 }

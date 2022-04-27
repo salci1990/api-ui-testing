@@ -10,7 +10,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,15 +32,16 @@ abstract public class AbstractTest {
     SignUpPage signUpPage;
     UserAccountPage userAccountPage;
 
-    @BeforeMethod
-    public void setup() {
+    @BeforeMethod(onlyForGroups = "UITests")
+    public void setup() throws MalformedURLException {
+
+        initialisation();
         homePage = new HomePage(driver, wait);
         signInPage = new SignInPage(driver, wait);
         signUpPage = new SignUpPage(driver, wait);
         userAccountPage = new UserAccountPage(driver, wait);
     }
 
-    @BeforeClass
     public void initialisation() throws MalformedURLException {
         String gridUrl = System.getProperty("grid.url");
         if (gridUrl == null) {
@@ -50,12 +54,7 @@ abstract public class AbstractTest {
         wait = new WebDriverWait(driver, 2);
     }
 
-    @AfterMethod
-    public void setupAfterSingleTest() {
-        driver.close();
-    }
-
-    @AfterClass
+    @AfterMethod(onlyForGroups = "UITests")
     public void terminate() {
         driver.quit();
     }

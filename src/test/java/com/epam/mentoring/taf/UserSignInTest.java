@@ -16,19 +16,16 @@ public class UserSignInTest extends AbstractTest {
     private final String email = "tom_marvolo@example.com";
     private final String password = "Voldemort";
 
-    @Test(groups = "UITest")
-    public void uiSignInVerification() {
+    @Test(groups = "UITests")
+    public void uiCorrectSignInVeryficationTest() {
 
         homePage.clickSignInButton();
-        Assert.assertEquals(signInPage.getSignInTitle(), "Sign in");
         signInPage
                 .enterEmailField(email)
                 .enterPasswordField(password)
                 .clickSignInButton();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class=\'user-pic\']")));
-        String actualUserName = userAccountPage.returnActualUserName();
-        Assert.assertEquals(actualUserName, username);
+        
+        Assert.assertEquals(userAccountPage.getActualUserName(), username);
     }
 
     @Test(groups = "APITest")

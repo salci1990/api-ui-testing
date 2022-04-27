@@ -28,6 +28,9 @@ public class SignUpPage implements IPageValidation {
     @FindBy(className = "btn")
     private WebElement signUpButton;
 
+    @FindBy(xpath = "//li[contains(text(),'email has already been taken')]")
+    private WebElement errorMessage;
+
     public SignUpPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
@@ -36,20 +39,23 @@ public class SignUpPage implements IPageValidation {
 
     @Override
     public void waitToLoadPage() {
-        wait.until(ExpectedConditions.visibilityOf(signUpTitle));
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
     }
 
     public SignUpPage enterEmailField(String email) {
+        emailField.clear();
         emailField.sendKeys(email);
         return this;
     }
 
     public SignUpPage enterPasswordField(String password) {
+        passwordField.clear();
         passwordField.sendKeys(password);
         return this;
     }
 
     public SignUpPage enterUserNameField(String username) {
+        userNameField.clear();
         userNameField.sendKeys(username);
         return this;
     }
@@ -61,5 +67,10 @@ public class SignUpPage implements IPageValidation {
 
     public String getSignUpTitle() {
         return signUpTitle.getText();
+    }
+
+    public String error() {
+        waitToLoadPage();
+        return errorMessage.getText();
     }
 }

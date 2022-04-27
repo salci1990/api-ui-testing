@@ -15,39 +15,33 @@ public class UserSignUpTest extends AbstractTest {
     private final String email = "test_user@example.com";
     private final String password = "test_password";
 
-    @Test(groups = "UITest")
-    public void uiSignUpVerification() {
+    @Test(groups = "UITests")
+    public void uiSignUpVerificationTest() {
         int uniqueId = (int) (Math.random() * 100);
         String uniqueUsername = this.username + uniqueId;
         String uniqueEmail = this.email.replace("@", "." + uniqueId + "@");
 
-        homePage.clickSginUpBatton();
-        Assert.assertEquals(signUpPage.getSignUpTitle(), "Sign up");
+        homePage.clickSginUpButton();
         signUpPage
                 .enterUserNameField(uniqueUsername)
                 .enterEmailField(uniqueEmail)
                 .enterPasswordField(password)
                 .clickSignUpButton();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class=\'user-pic\']")));
-        String actualUserName = userAccountPage.returnActualUserName();
-        Assert.assertEquals(actualUserName, uniqueUsername);
+        Assert.assertEquals(userAccountPage.getActualUserName(), uniqueUsername);
     }
 
-    @Test(groups = "UITest")
-    public void uiSignUpNegativeVerification() {
+    @Test(groups = "UITests")
+    public void uiLogInWithInvalidEmailOrUsernameTest() {
 
-        homePage.clickSginUpBatton();
-        Assert.assertEquals(signUpPage.getSignUpTitle(), "Sign up");
-
+        homePage.clickSginUpButton();
         signUpPage
                 .enterUserNameField(username)
                 .enterEmailField(email)
                 .enterPasswordField(password)
                 .clickSignUpButton();
-//        wait.until(ExpectedConditions.visibilityOf(signUpPage.error()));
-        String errorMessage = "email or password is invalid";
-        Assert.assertEquals(errorMessage, "email or password is invalid");
+
+        Assert.assertEquals(signUpPage.error(), "email has already been taken");
     }
 
     @Test(groups = "APITest")

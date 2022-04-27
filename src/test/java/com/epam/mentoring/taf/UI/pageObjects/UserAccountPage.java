@@ -35,7 +35,8 @@ public class UserAccountPage implements IPageValidation {
         return new UserAccountPage(driver, wait);
     }
 
-    public String returnActualUserName() {
+    public String getActualUserName() {
+        waitToLoadPage();
         return actualUserName.getText();
     }
 }
