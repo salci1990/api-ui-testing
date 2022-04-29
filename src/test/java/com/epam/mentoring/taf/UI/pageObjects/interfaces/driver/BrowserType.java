@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.driver;
+package com.epam.mentoring.taf.UI.pageObjects.interfaces.driver;
 
 public enum BrowserType {
 

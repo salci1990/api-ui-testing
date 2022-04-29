@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.driver;
+package com.epam.mentoring.taf.UI.pageObjects.interfaces.driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
