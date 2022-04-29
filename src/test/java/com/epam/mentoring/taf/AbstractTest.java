@@ -4,19 +4,22 @@ import com.epam.mentoring.taf.UI.pageObjects.HomePage;
 import com.epam.mentoring.taf.UI.pageObjects.SignInPage;
 import com.epam.mentoring.taf.UI.pageObjects.SignUpPage;
 import com.epam.mentoring.taf.UI.pageObjects.UserAccountPage;
+import com.epam.mentoring.taf.UI.pageObjects.interfaces.driver.BrowserType;
+import com.epam.mentoring.taf.UI.pageObjects.interfaces.driver.DriverManager;
+import com.epam.mentoring.taf.utils.Utils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.epam.mentoring.taf.utils.Utils.*;
 
 abstract public class AbstractTest {
 
@@ -45,13 +48,14 @@ abstract public class AbstractTest {
     public void initialisation() throws MalformedURLException {
         String gridUrl = System.getProperty("grid.url");
         if (gridUrl == null) {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
+            DriverManager.getInstance().setWebDriver(BrowserType.valueOf(CONFIG_DATA.driverType()));
         } else {
             driver = new RemoteWebDriver(new URL(gridUrl), DesiredCapabilities.chrome());
         }
-        driver.get(baseUrl);
-        wait = new WebDriverWait(driver, 2);
+        driver = DriverManager.getInstance().getDriver();
+        driver.get(CONFIG_DATA.uiUrl());
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, CONFIG_DATA.waitTimeoutInSeconds());
     }
 
     @AfterMethod(onlyForGroups = "UITests")
@@ -60,4 +64,3 @@ abstract public class AbstractTest {
     }
 
 }
-
