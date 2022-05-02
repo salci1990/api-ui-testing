@@ -16,4 +16,10 @@ public interface ConfigData extends Config {
 
     @Key("wait.timeout.seconds")
     Integer waitTimeoutInSeconds();
+
+    @Key("path.to.yaml.folder")
+    String pathToYamlFolder();
+
+    @Key("enpoints.file")
+    String endpointsFile();
 }

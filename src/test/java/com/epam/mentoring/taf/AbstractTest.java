@@ -1,15 +1,12 @@
 package com.epam.mentoring.taf;
 
-import com.epam.mentoring.taf.UI.pageObjects.HomePage;
-import com.epam.mentoring.taf.UI.pageObjects.SignInPage;
-import com.epam.mentoring.taf.UI.pageObjects.SignUpPage;
-import com.epam.mentoring.taf.UI.pageObjects.UserAccountPage;
-import com.epam.mentoring.taf.UI.pageObjects.interfaces.driver.BrowserType;
-import com.epam.mentoring.taf.UI.pageObjects.interfaces.driver.DriverManager;
-import com.epam.mentoring.taf.utils.Utils;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.epam.mentoring.taf.ui.pageobjects.HomePage;
+import com.epam.mentoring.taf.ui.pageobjects.SignInPage;
+import com.epam.mentoring.taf.ui.pageobjects.SignUpPage;
+import com.epam.mentoring.taf.ui.pageobjects.UserAccountPage;
+import com.epam.mentoring.taf.driver.BrowserType;
+import com.epam.mentoring.taf.driver.DriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,7 +16,7 @@ import org.testng.annotations.BeforeMethod;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.epam.mentoring.taf.utils.Utils.*;
+import static com.epam.mentoring.taf.utils.Utils.CONFIG_DATA;
 
 abstract public class AbstractTest {
 

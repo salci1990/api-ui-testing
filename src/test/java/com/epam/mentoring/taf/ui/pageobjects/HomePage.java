@@ -1,6 +1,6 @@
-package com.epam.mentoring.taf.UI.pageObjects;
+package com.epam.mentoring.taf.ui.pageobjects;
 
-import com.epam.mentoring.taf.UI.pageObjects.interfaces.IPageValidation;
+import com.epam.mentoring.taf.ui.pageobjects.interfaces.IPageValidation;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

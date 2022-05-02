@@ -34,7 +34,7 @@ public class UserSignInTest extends AbstractTest {
     }
 
     @Test(groups = "APITest")
-    public void succesfullLogInTest() {
+    public void succesfulLogInTest() {
 
         logInApi
                 .logInUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\"}}", email, password))

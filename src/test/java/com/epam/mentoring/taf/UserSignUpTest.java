@@ -50,7 +50,7 @@ public class UserSignUpTest extends AbstractTest {
     }
 
     @Test(groups = "APITest")
-    public void apiSuccesfullSignUpTest() {
+    public void apiSuccesfulSignUpTest() {
         int uniqueId = (int) (Math.random() * 100);
         String username = this.username + uniqueId;
         String email = this.email.replace("@", "." + uniqueId + "@");

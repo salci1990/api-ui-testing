@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.UI.pageObjects.interfaces;
+package com.epam.mentoring.taf.ui.pageobjects.interfaces;
 
 public interface IPageValidation {
 
