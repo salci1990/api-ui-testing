@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.UI.pageObjects.interfaces.driver;
+package com.epam.mentoring.taf.driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +7,8 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.net.MalformedURLException;
+
+import static com.epam.mentoring.taf.driver.BrowserType.*;
 
 public class BrowserFactory {
 
