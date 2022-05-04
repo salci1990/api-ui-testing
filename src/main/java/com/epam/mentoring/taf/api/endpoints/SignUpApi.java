@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 
 public class SignUpApi extends RESTCore {
 
-    private static final String SIGNUP_ENDPOINT = Utils.SIGNUP_DATA.getSignup();
+    private static final String SIGNUP_ENDPOINT = Utils.SIGNUP_DATA.getLogin();
 
     public Response signUpUser(String body) {
         return prepareRequest()

@@ -5,12 +5,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 
 public class UserSignUpTest extends AbstractTest {
 
-    private final String username = "Test User";
-    private final String email = "test_user@example.com";
+    private final String username = "Test UserTest";
+    private final String email = "test_user@exampleTest.com";
     private final String password = "test_password";
 
     private SignUpApi signUpApi;
@@ -58,7 +58,13 @@ public class UserSignUpTest extends AbstractTest {
         signUpApi
                 .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
                 .then()
-                .statusCode(200);
+                .assertThat()
+                .statusCode(200)
+                .body("user.username", is(username))
+                .body("user.email", is(email))
+                .body("user.bio", nullValue())
+                .body("user.token", notNullValue())
+                .body("user.image", notNullValue());
     }
 
     @Test(groups = "APITest")
@@ -67,8 +73,10 @@ public class UserSignUpTest extends AbstractTest {
         signUpApi
                 .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
                 .then()
-                .statusCode(422)
+                .assertThat()
+                .statusCode(403)
                 .body("errors.email", hasItem("has already been taken"));
+
     }
 
     @Test(enabled = false, groups = "APITest", description = "api Wrong Email during signUp test")
@@ -77,7 +85,9 @@ public class UserSignUpTest extends AbstractTest {
         signUpApi
                 .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", "wrong_email", password, username))
                 .then()
+                .assertThat()
                 .statusCode(422)
                 .body("errors.email", hasItem("is invalid"));
+
     }
 }

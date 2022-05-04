@@ -5,8 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 public class UserSignInTest extends AbstractTest {
 
@@ -39,9 +38,12 @@ public class UserSignInTest extends AbstractTest {
         logInApi
                 .logInUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\"}}", email, password))
                 .then()
-                .statusCode(200)
-                .body("user.email", is(email));
-
+                .assertThat()
+                .body("user.username", is(username))
+                .body("user.email", is(email))
+                .body("user.image", notNullValue())
+                .body("user.token", notNullValue())
+                .statusCode(200);
     }
 
     @Test(groups = "APITest")
@@ -49,6 +51,7 @@ public class UserSignInTest extends AbstractTest {
         logInApi.
                 logInUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\"}}", email, "wrong_password"))
                 .then()
+                .assertThat()
                 .statusCode(422)
                 .body("errors.email or password", hasItem("is invalid"));
     }
