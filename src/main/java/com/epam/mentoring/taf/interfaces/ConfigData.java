@@ -20,6 +20,6 @@ public interface ConfigData extends Config {
     @Key("path.to.yaml.folder")
     String pathToYamlFolder();
 
-    @Key("enpoints.file")
+    @Key("endpoints.file")
     String endpointsFile();
 }
