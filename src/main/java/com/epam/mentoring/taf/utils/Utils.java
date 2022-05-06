@@ -9,5 +9,4 @@ public class Utils {
 
     public static final ConfigData CONFIG_DATA = ConfigFactory.create(ConfigData.class);
     public static final EndpointsData ENDPOINTS_DATA = YamlDataFileManager.readDataFromFile(CONFIG_DATA.endpointsFile(), EndpointsData.class);
-    public static final EndpointsData SIGNUP_DATA = YamlDataFileManager.readDataFromFile(CONFIG_DATA.endpointsFile(), EndpointsData.class);
 }
