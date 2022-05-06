@@ -6,11 +6,11 @@ import io.restassured.response.Response;
 
 public class SignUpApi extends RESTCore {
 
-    private static final String SIGNUP_ENDPOINT = Utils.SIGNUP_DATA.getLogin();
+    private static final String ENDPOINTS_DATA = Utils.ENDPOINTS_DATA.getLogin();
 
     public Response signUpUser(String body) {
         return prepareRequest()
                 .body(body)
-                .post(SIGNUP_ENDPOINT);
+                .post(ENDPOINTS_DATA);
     }
 }
