@@ -1,19 +1,24 @@
 package com.epam.mentoring.taf;
 
-import io.restassured.http.ContentType;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import com.epam.mentoring.taf.api.endpoints.SignUpApi;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 
 public class UserSignUpTest extends AbstractTest {
 
-    private final String username = "Test User";
-    private final String email = "test_user@example.com";
+    private final String username = "Test UserTest";
+    private final String email = "test_user@exampleTest.com";
     private final String password = "test_password";
+
+    private SignUpApi signUpApi;
+
+    @BeforeClass
+    public void setupTest() {
+        signUpApi = new SignUpApi();
+    }
 
     @Test(groups = "UITests")
     public void uiSignUpVerificationTest() {
@@ -45,44 +50,44 @@ public class UserSignUpTest extends AbstractTest {
     }
 
     @Test(groups = "APITest")
-    public void apiVerification() {
+    public void apiSuccesfulSignUpTest() {
         int uniqueId = (int) (Math.random() * 100);
         String username = this.username + uniqueId;
         String email = this.email.replace("@", "." + uniqueId + "@");
 
-        given().baseUri(API_URL)
-                .when()
-                .contentType(ContentType.JSON)
-                .body(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
-                .post("/api/users")
+        signUpApi
+                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
                 .then()
-                .statusCode(200);
+                .assertThat()
+                .statusCode(200)
+                .body("user.username", is(username))
+                .body("user.email", is(email))
+                .body("user.bio", nullValue())
+                .body("user.token", notNullValue())
+                .body("user.image", notNullValue());
     }
 
     @Test(groups = "APITest")
-    public void apiAlreadyRegisteredVerification() {
-        given().baseUri(API_URL)
-                .when()
-                .contentType(ContentType.JSON)
-                .body(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
-                .post("/api/users")
+    public void apiAlreadyRegisteredUserTest() {
+
+        signUpApi
+                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
                 .then()
-                .statusCode(422)
+                .assertThat()
+                .statusCode(403)
                 .body("errors.email", hasItem("has already been taken"));
+
     }
 
     @Test(enabled = false, groups = "APITest", description = "api Wrong Email during signUp test")
-    public void apiWrongEmailVerification() {
-        given().log().all()
-                .baseUri(API_URL)
-                .when()
-                .contentType(ContentType.JSON)
-                .body(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", "wrong_email", password, username))
-                .log().all()
-                .post("/api/users")
+    public void apiWrongEmailVerificationTest() {
+
+        signUpApi
+                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", "wrong_email", password, username))
                 .then()
+                .assertThat()
                 .statusCode(422)
                 .body("errors.email", hasItem("is invalid"));
-    }
 
+    }
 }

@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.UI.pageObjects.interfaces.driver;
+package com.epam.mentoring.taf.driver;
 
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;

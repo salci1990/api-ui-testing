@@ -8,6 +8,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.net.MalformedURLException;
 
+import static com.epam.mentoring.taf.driver.BrowserType.*;
+
 public class BrowserFactory {
 
     public static WebDriver getBrowser(BrowserType browserType) throws MalformedURLException {
