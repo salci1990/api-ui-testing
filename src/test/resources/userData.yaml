@@ -1,0 +1,9 @@
+users:
+  - type: existing
+    username: Tom Marvolo Riddle
+    password: Voldemort
+    email: tom_marvolo@example.com
+  - type: existing with invalid password
+    username: Voldemort
+    password: wrong_password
+    email: tom_marvolo@example.com
