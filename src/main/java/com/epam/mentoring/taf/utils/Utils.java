@@ -15,12 +15,10 @@ public class Utils {
     public static synchronized int generateRandomNumber() {
         return (int) (Math.random() * 1000);
     }
-
     public static String generateRandomString (String username) {
         String usernameWithUniqueId = username + generateRandomNumber();
         return usernameWithUniqueId;
     }
-
     public static String generateRandomEmail (String email) {
         String emailWithUniqueId = email.replace("@", "." + generateRandomNumber() + "@");
         return emailWithUniqueId;

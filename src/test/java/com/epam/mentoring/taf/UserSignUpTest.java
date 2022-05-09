@@ -1,6 +1,11 @@
 package com.epam.mentoring.taf;
 
-import com.epam.mentoring.taf.api.endpoints.SignUpApi;
+import com.epam.mentoring.taf.api.apidto.ErrorsDTO;
+import com.epam.mentoring.taf.api.apidto.UserDTO;
+import com.epam.mentoring.taf.api.builders.UserBuilder;
+import com.epam.mentoring.taf.api.endpoints.UserApi;
+import com.epam.mentoring.taf.api.models.User;
+import com.epam.mentoring.taf.utils.Utils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -9,28 +14,30 @@ import static org.hamcrest.Matchers.*;
 
 public class UserSignUpTest extends AbstractTest {
 
-    private final String username = "Test UserTest";
-    private final String email = "test_user@exampleTest.com";
-    private final String password = "test_password";
+    private String userWithUniqueId;
 
-    private SignUpApi signUpApi;
+    private UserApi userApi;
+    private UserDTO userDTO;
+    private ErrorsDTO errorDTO;
+    private User invalidUser;
+    private User user;
 
     @BeforeClass
     public void setupTest() {
-        signUpApi = new SignUpApi();
+        userApi = new UserApi();
     }
 
     @Test(groups = "UITests")
     public void uiSignUpVerificationTest() {
-        int uniqueId = (int) (Math.random() * 100);
-        String uniqueUsername = this.username + uniqueId;
-        String uniqueEmail = this.email.replace("@", "." + uniqueId + "@");
+        int uniqueId = Utils.generateRandomNumber();
+        String uniqueUsername = Utils.generateRandomString(String.valueOf(uniqueId));
+        String uniqueEmail = Utils.generateRandomEmail(uniqueUsername);
 
         homePage.clickSginUpButton();
         signUpPage
                 .enterUserNameField(uniqueUsername)
                 .enterEmailField(uniqueEmail)
-                .enterPasswordField(password)
+                .enterPasswordField(user.getPassword())
                 .clickSignUpButton();
 
         Assert.assertEquals(userAccountPage.getActualUserName(), uniqueUsername);
@@ -41,9 +48,9 @@ public class UserSignUpTest extends AbstractTest {
 
         homePage.clickSginUpButton();
         signUpPage
-                .enterUserNameField(username)
-                .enterEmailField(email)
-                .enterPasswordField(password)
+                .enterUserNameField(user.getUsername())
+                .enterEmailField(user.getEmail())
+                .enterPasswordField(user.getPassword())
                 .clickSignUpButton();
 
         Assert.assertEquals(signUpPage.error(), "email has already been taken");
@@ -51,16 +58,22 @@ public class UserSignUpTest extends AbstractTest {
 
     @Test(groups = "APITest")
     public void apiSuccesfulSignUpTest() {
-        int uniqueId = (int) (Math.random() * 100);
-        String username = this.username + uniqueId;
-        String email = this.email.replace("@", "." + uniqueId + "@");
+        String email = user.getEmail().replace("@", "." + Utils.generateRandomNumber() + "@");
 
-        signUpApi
-                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
+        userDTO = new UserDTO(
+                new UserBuilder()
+                        .withUserName(user.getUsername())
+                        .withEmail(user.getEmail())
+                        .withPassword(user.getPassword())
+                        .build()
+        );
+
+        userApi
+                .createNewUser(userDTO, true)
                 .then()
                 .assertThat()
                 .statusCode(200)
-                .body("user.username", is(username))
+                .body("user.username", is(user.getUsername()))
                 .body("user.email", is(email))
                 .body("user.bio", nullValue())
                 .body("user.token", notNullValue())
@@ -70,24 +83,43 @@ public class UserSignUpTest extends AbstractTest {
     @Test(groups = "APITest")
     public void apiAlreadyRegisteredUserTest() {
 
-        signUpApi
-                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", email, password, username))
+        userDTO = new UserDTO(
+                new UserBuilder()
+                        .withUserName(invalidUser.getUsername())
+                        .withEmail(invalidUser.getEmail())
+                        .withPassword(invalidUser.getPassword())
+                        .build()
+        );
+
+        userApi
+                .createNewUser(userDTO, true)
                 .then()
                 .assertThat()
-                .statusCode(403)
-                .body("errors.email", hasItem("has already been taken"));
+                .statusCode(422)
+                .extract().as(ErrorsDTO.class);
 
+        Assert.assertTrue(errorDTO.getErrors().getEmail().get(0).contains("has already been taken"));
+        Assert.assertTrue(errorDTO.getErrors().getUsername().get(0).contains("has already been taken"));
     }
 
     @Test(enabled = false, groups = "APITest", description = "api Wrong Email during signUp test")
     public void apiWrongEmailVerificationTest() {
+        userWithUniqueId = Utils.generateRandomString(invalidUser.getUsername());
 
-        signUpApi
-                .signUpUser(String.format("{\"user\":{\"email\":\"%s\",\"password\":\"%s\",\"username\":\"%s\"}}", "wrong_email", password, username))
+        userDTO = new UserDTO(new UserBuilder()
+                .withEmail(invalidUser.getEmail())
+                .withPassword(invalidUser.getPassword())
+                .withUserName(userWithUniqueId)
+                .build()
+        );
+
+        errorDTO = userApi
+                .createNewUser(userDTO, true)
                 .then()
-                .assertThat()
                 .statusCode(422)
-                .body("errors.email", hasItem("is invalid"));
+                .extract().as(ErrorsDTO.class);
+
+        Assert.assertTrue(errorDTO.getErrors().getEmail().get(0).contains("has already been taken"));
 
     }
 }
