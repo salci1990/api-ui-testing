@@ -24,5 +24,5 @@ public interface ConfigData extends Config {
     String endpointsFile();
 
     @Key("user.data")
-    Object userData();
+    String userData();
 }

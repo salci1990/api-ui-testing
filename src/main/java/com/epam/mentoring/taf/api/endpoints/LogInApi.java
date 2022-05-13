@@ -9,7 +9,7 @@ public class LogInApi extends RESTCore {
 
     private static final String LOGIN_ENDPOINT = Utils.ENDPOINTS_DATA.getLogin();
 
-    public Response logInUser(UserDTO userDTO, boolean... shouldRequestFail) {
+    public Response logInUser(UserDTO userDTO) {
         return prepareRequest()
                 .body(userDTO)
                 .post(LOGIN_ENDPOINT);

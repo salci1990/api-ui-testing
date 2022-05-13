@@ -9,7 +9,7 @@ public class UserApi extends RESTCore {
 
     private static final String ENDPOINTS_DATA = Utils.ENDPOINTS_DATA.getLogin();
 
-    public Response createNewUser(UserDTO userDTO, boolean... shouldRequestFailur) {
+    public Response createNewUser(UserDTO userDTO) {
         return prepareRequest()
                 .body(userDTO)
                 .post(ENDPOINTS_DATA);

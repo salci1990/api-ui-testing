@@ -7,3 +7,15 @@ users:
     username: Voldemort
     password: wrong_password
     email: tom_marvolo@example.com
+  - type: wrong login
+    username: I don't exist
+    password: same here
+    email: idontexist@gmail.com
+  - type: email or username already exist
+    username: tom_marvolo@example.com
+    password: Tom Marvolo Riddle
+    email: password123
+  - type: invalid email
+    username: Tom Marvolo Riddle
+    password: Voldemort
+    email: tom_marvolo@example111.com

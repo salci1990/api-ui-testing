@@ -5,22 +5,29 @@ import com.epam.mentoring.taf.api.apidto.UserDTO;
 import com.epam.mentoring.taf.api.builders.UserBuilder;
 import com.epam.mentoring.taf.api.endpoints.LogInApi;
 import com.epam.mentoring.taf.api.models.User;
+import com.epam.mentoring.taf.utils.Utils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.contains;
 
 public class UserSignInTest extends AbstractTest {
 
     private LogInApi logInApi;
     private UserDTO userDTO;
-    private User invalidUser;
-    private User user;
+    private User wrongLoginUser;
+    private User newUser;
 
     @BeforeClass
     public void setupTest() {
         logInApi = new LogInApi();
+        newUser = Utils.getUserData("existing");
+        wrongLoginUser = Utils.getUserData("wrong login");
     }
 
     @Test(groups = "UITests")
@@ -28,30 +35,30 @@ public class UserSignInTest extends AbstractTest {
 
         homePage.clickSignInButton();
         signInPage
-                .enterEmailField(user.getEmail())
-                .enterPasswordField(user.getPassword())
+                .enterEmailField(newUser.getEmail())
+                .enterPasswordField(newUser.getPassword())
                 .clickSignInButton();
 
-        Assert.assertEquals(userAccountPage.getActualUserName(), this.user.getUsername());
+        Assert.assertEquals(userAccountPage.getActualUserName(), this.newUser.getUsername());
     }
 
-    @Test(groups = "APITest")
-    public void succesfulLogInTest() {
+    @Test(groups = "APITest", description = "[API Test] Successful login test")
+    public void successfulLogInTest() {
 
         userDTO = new UserDTO(
                 new UserBuilder()
-                        .withUserName(invalidUser.getUsername())
-                        .withEmail(invalidUser.getEmail())
-                        .withPassword(invalidUser.getPassword())
+                        .withUserName(newUser.getUsername())
+                        .withEmail(newUser.getEmail())
+                        .withPassword(newUser.getPassword())
                         .build()
         );
 
         logInApi
-                .logInUser(userDTO, true)
+                .logInUser(userDTO)
                 .then()
                 .assertThat()
-                .body("user.username", is(user.getUsername()))
-                .body("user.email", is(user.getEmail()))
+                .body("user.username", is(newUser.getUsername()))
+                .body("user.email", is(newUser.getEmail()))
                 .body("user.image", notNullValue())
                 .body("user.token", notNullValue())
                 .statusCode(200)
@@ -63,14 +70,14 @@ public class UserSignInTest extends AbstractTest {
 
         userDTO = new UserDTO(
                 new UserBuilder()
-                        .withUserName(invalidUser.getUsername())
-                        .withEmail(invalidUser.getEmail())
-                        .withPassword(invalidUser.getPassword())
+                        .withUserName(wrongLoginUser.getUsername())
+                        .withEmail(wrongLoginUser.getEmail())
+                        .withPassword(wrongLoginUser.getPassword())
                         .build()
         );
 
         logInApi.
-                logInUser(userDTO, true)
+                logInUser(userDTO)
                 .then()
                 .assertThat()
                 .statusCode(422)
