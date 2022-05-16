@@ -1,4 +1,4 @@
-package com.epam.mentoring.taf.api.apidto;
+package com.epam.mentoring.taf.api.models.dtos;
 
 import com.epam.mentoring.taf.api.models.Errors;
 import com.fasterxml.jackson.annotation.JsonProperty;

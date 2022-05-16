@@ -1,11 +1,13 @@
 package com.epam.mentoring.taf;
 
-import com.epam.mentoring.taf.api.apidto.ErrorsDTO;
-import com.epam.mentoring.taf.api.apidto.UserDTO;
+import com.epam.mentoring.taf.api.models.dtos.ErrorsDTO;
+import com.epam.mentoring.taf.api.models.dtos.UserDTO;
 import com.epam.mentoring.taf.api.builders.UserBuilder;
 import com.epam.mentoring.taf.api.endpoints.LogInApi;
 import com.epam.mentoring.taf.api.models.User;
 import com.epam.mentoring.taf.utils.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -61,8 +63,7 @@ public class UserSignInTest extends AbstractTest {
                 .body("user.email", is(newUser.getEmail()))
                 .body("user.image", notNullValue())
                 .body("user.token", notNullValue())
-                .statusCode(200)
-                .extract().as(ErrorsDTO.class);
+                .statusCode(200);
     }
 
     @Test(groups = "APITest", description = "[API Test] Invalid login with wrong password")

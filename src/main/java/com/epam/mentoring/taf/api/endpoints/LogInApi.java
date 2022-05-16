@@ -1,7 +1,7 @@
 package com.epam.mentoring.taf.api.endpoints;
 
 import com.epam.mentoring.taf.api.RESTCore;
-import com.epam.mentoring.taf.api.apidto.UserDTO;
+import com.epam.mentoring.taf.api.models.dtos.UserDTO;
 import com.epam.mentoring.taf.utils.Utils;
 import io.restassured.response.Response;
 
