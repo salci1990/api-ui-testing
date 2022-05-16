@@ -53,7 +53,7 @@ public class UserSignUpTest extends AbstractTest {
     }
 
     @Test(groups = "UITests", description = "[UI Test] Log in invalid email or username")
-    public void uiLogInWithInvalidEmailOrUsernameTest() {
+    public void uiLogInWithInvalidEmailOrUsernameTest() throws Exception {
 
         homePage.clickSginUpButton();
         signUpPage
@@ -61,6 +61,8 @@ public class UserSignUpTest extends AbstractTest {
                 .enterEmailField(existingUser.getEmail())
                 .enterPasswordField(existingUser.getPassword())
                 .clickSignUpButton();
+
+        Utils.takeScreenShot(driver, Utils.PATH_FILE);
 
         Assert.assertEquals(signUpPage.error(), "email has already been taken");
     }

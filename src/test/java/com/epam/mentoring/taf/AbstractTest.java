@@ -6,6 +6,8 @@ import com.epam.mentoring.taf.ui.pageobjects.SignUpPage;
 import com.epam.mentoring.taf.ui.pageobjects.UserAccountPage;
 import com.epam.mentoring.taf.driver.BrowserType;
 import com.epam.mentoring.taf.driver.DriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -32,6 +34,8 @@ abstract public class AbstractTest {
     SignUpPage signUpPage;
     UserAccountPage userAccountPage;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @BeforeMethod(onlyForGroups = "UITests")
     public void setup() throws MalformedURLException {
 
@@ -43,6 +47,7 @@ abstract public class AbstractTest {
     }
 
     public void initialisation() throws MalformedURLException {
+        LOGGER.info("Prepare every setting to start testing run.");
         String gridUrl = System.getProperty("grid.url");
         if (gridUrl == null) {
             DriverManager.getInstance().setWebDriver(BrowserType.valueOf(CONFIG_DATA.driverType()));
