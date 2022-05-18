@@ -1,6 +1,7 @@
 package com.epam.mentoring.taf.api;
 
 import com.epam.mentoring.taf.utils.Utils;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -25,7 +26,8 @@ public abstract class RESTCore {
 
     public RequestSpecification prepareRequest() {
         return RestAssured.given()
-                .filters(new RequestLoggingFilter(), new ResponseLoggingFilter())
+//                .filters(new RequestLoggingFilter(), new ResponseLoggingFilter())
+                .filter(new AllureRestAssured())
                 .spec(REQUEST_SPECIFICATION)
                 .headers(restAssuredHeaders)
                 .baseUri(API_URL);

@@ -1,15 +1,19 @@
 package com.epam.mentoring.taf;
 
-import com.epam.mentoring.taf.api.models.dtos.ErrorsDTO;
-import com.epam.mentoring.taf.api.models.dtos.UserDTO;
 import com.epam.mentoring.taf.api.builders.UserBuilder;
 import com.epam.mentoring.taf.api.endpoints.LogInApi;
 import com.epam.mentoring.taf.api.models.User;
+import com.epam.mentoring.taf.api.models.dtos.UserDTO;
+import com.epam.mentoring.taf.ui.pageobjects.listeners.TestListener;
 import com.epam.mentoring.taf.utils.Utils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import io.qameta.allure.Story;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,6 +22,7 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.contains;
 
+@Listeners({TestListener.class})
 public class UserSignInTest extends AbstractTest {
 
     private LogInApi logInApi;
@@ -32,19 +37,23 @@ public class UserSignInTest extends AbstractTest {
         wrongLoginUser = Utils.getUserData("wrong login");
     }
 
-    @Test(groups = "UITests")
+    @Test(groups = "UITests", description = "Successful singin test")
+    @Story("Story: Signin Presence")
+    @Severity(SeverityLevel.BLOCKER)
     public void uiCorrectSignInVeryficationTest() {
 
         homePage.clickSignInButton();
         signInPage
-                .enterEmailField(newUser.getEmail())
-                .enterPasswordField(newUser.getPassword())
+                .enterEmailField(wrongLoginUser.getEmail())
+                .enterPasswordField(wrongLoginUser.getPassword())
                 .clickSignInButton();
 
         Assert.assertEquals(userAccountPage.getActualUserName(), this.newUser.getUsername());
     }
 
     @Test(groups = "APITest", description = "[API Test] Successful login test")
+    @Story("Story: Login Presence")
+    @Severity(SeverityLevel.BLOCKER)
     public void successfulLogInTest() {
 
         userDTO = new UserDTO(
@@ -67,6 +76,8 @@ public class UserSignInTest extends AbstractTest {
     }
 
     @Test(groups = "APITest", description = "[API Test] Invalid login with wrong password")
+    @Story("Story: Wrong Login Presence")
+    @Severity(SeverityLevel.NORMAL)
     public void wrongLogInTest() {
 
         userDTO = new UserDTO(

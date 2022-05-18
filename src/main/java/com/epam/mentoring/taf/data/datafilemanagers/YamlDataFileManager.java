@@ -17,7 +17,7 @@ public class YamlDataFileManager implements DataFileManager {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static <T> T readDataFromFile(String fileName, Class<T> type) {
-        LOGGER.info("Read data from file.", fileName);
+        LOGGER.info("Read data from file... " + fileName);
         final String PATH_TO_FILE = YAML_FILE_PATH + fileName;
         Yaml yaml = new Yaml(new Constructor(type));
         T data = null;
@@ -28,7 +28,7 @@ public class YamlDataFileManager implements DataFileManager {
             LOGGER.error("Reading data from file, error IOException competent to perform");
             e.printStackTrace();
         }
-        LOGGER.trace("Loaded data from file.", fileName);
+        LOGGER.trace("Loaded data from file... " + fileName);
         return data;
     }
 }
