@@ -25,4 +25,7 @@ public interface ConfigData extends Config {
 
     @Key("user.data")
     String userData();
+
+    @Key("profile.file.data")
+    String profileData();
 }

@@ -1,2 +1,3 @@
 users: /api/users
 login: /api/users/login
+profiles: /api/profiles

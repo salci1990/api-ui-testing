@@ -26,8 +26,7 @@ public abstract class RESTCore {
 
     public RequestSpecification prepareRequest() {
         return RestAssured.given()
-//                .filters(new RequestLoggingFilter(), new ResponseLoggingFilter())
-                .filter(new AllureRestAssured())
+                .filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), new AllureRestAssured())
                 .spec(REQUEST_SPECIFICATION)
                 .headers(restAssuredHeaders)
                 .baseUri(API_URL);

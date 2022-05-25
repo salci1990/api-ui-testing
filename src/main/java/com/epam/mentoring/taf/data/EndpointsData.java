@@ -11,4 +11,5 @@ public class EndpointsData {
 
     private String users;
     private String login;
+    private String profiles;
 }

@@ -22,13 +22,8 @@ import static com.epam.mentoring.taf.utils.Utils.CONFIG_DATA;
 
 abstract public class AbstractTest {
 
-    protected final static String baseUrl = "https://angular.realworld.io";
-    protected final static String UI_URL = "https://angular.realworld.io";
-    protected final static String API_URL = "https://api.realworld.io/";
-
     protected WebDriver driver;
     protected WebDriverWait wait;
-
     HomePage homePage;
     SignInPage signInPage;
     SignUpPage signUpPage;
@@ -62,7 +57,7 @@ abstract public class AbstractTest {
 
     @AfterMethod(onlyForGroups = "UITests")
     public void terminate() {
+        LOGGER.info("Close driver after test method.");
         driver.quit();
     }
-
 }

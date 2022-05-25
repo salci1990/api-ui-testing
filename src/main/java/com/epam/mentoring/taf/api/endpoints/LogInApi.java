@@ -2,6 +2,7 @@ package com.epam.mentoring.taf.api.endpoints;
 
 import com.epam.mentoring.taf.api.RESTCore;
 import com.epam.mentoring.taf.api.models.dtos.UserDTO;
+import com.epam.mentoring.taf.api.models.dtos.UserProfileDTO;
 import com.epam.mentoring.taf.utils.Utils;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
@@ -17,5 +18,13 @@ public class LogInApi extends RESTCore {
         return prepareRequest()
                 .body(userDTO)
                 .post(LOGIN_ENDPOINT);
+    }
+
+    public String getLoginToken(UserDTO userDTO) {
+        LOGGER.info("Get login token.");
+        return logInUser(userDTO)
+                .then()
+                .extract()
+                .path("user.token");
     }
 }
