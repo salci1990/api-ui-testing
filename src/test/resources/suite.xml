@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
-    <test name="Test">
+    <test name="UI Tests">
+        <classes>
+            <class name="com.epam.mentoring.taf.UserSignInUITest"/>
+        </classes>
+    </test>
+    <test name="API Tests">
+        <classes>
+            <class name="com.epam.mentoring.taf.api.UserFollowingTest"/>
+        </classes>
+    </test>
+    <test name="UI and API Tests">
         <classes>
             <class name="com.epam.mentoring.taf.UserSignUpTest"/>
-            <class name="com.epam.mentoring.taf.UserSignInTest"/>
-            <class name="com.epam.mentoring.taf.UserFollowingTest"/>
         </classes>
+    </test>
+    <test name="com.epam.mentoring.taf.UserSignUpTest">
+        <groups>
+            <run>
+                <exclude name="apiWrongEmailVerificationTest"  />
+            </run>
+        </groups>
     </test>
 </suite>

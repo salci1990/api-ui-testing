@@ -1,5 +1,6 @@
-package com.epam.mentoring.taf;
+package com.epam.mentoring.taf.api;
 
+import com.epam.mentoring.taf.AbstractTest;
 import com.epam.mentoring.taf.api.builders.UserBuilder;
 import com.epam.mentoring.taf.api.endpoints.LogInApi;
 import com.epam.mentoring.taf.api.endpoints.ProfilesApi;

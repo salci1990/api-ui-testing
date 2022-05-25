@@ -15,6 +15,7 @@ public class Utils {
     public static final ConfigData CONFIG_DATA = ConfigFactory.create(ConfigData.class);
     public static final EndpointsData ENDPOINTS_DATA = YamlDataFileManager.readDataFromFile(CONFIG_DATA.endpointsFile(), EndpointsData.class);
     public static final UserDTO USER_DATA = YamlDataFileManager.readDataFromFile(CONFIG_DATA.userData(), UserDTO.class);
+
     public static synchronized int generateRandomNumber() {
         LOGGER.info("Generate random number.");
         return (int) (Math.random() * 1000);
